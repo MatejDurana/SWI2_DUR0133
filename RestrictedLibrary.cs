@@ -10,15 +10,22 @@ namespace SWI2_DUR0133
     {
         public override void CheckOutBook(Book book, Patron patron)
         {
-            Console.WriteLine($"{patron.Name} is trying to check out {book.Title} from a restricted library.");
-            if (book.IsAvailable)
+            if (!IsBookRestricted(book))
             {
                 base.CheckOutBook(book, patron);
             }
             else
             {
-                Console.WriteLine($"{book.Title} is not available for checkout at this time");
+                Console.WriteLine($"{book.Title} is not available for checkout at this time in the restricted library");
             }
         }
+
+        private bool IsBookRestricted(Book book)
+        {
+            List<string> restrictedBookTitles = new List<string> { "Restricted Book 1", "Restricted Book 2" };
+            return restrictedBookTitles.Contains(book.Title);
+        }
+
     }
+
 }
