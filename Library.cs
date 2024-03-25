@@ -1,6 +1,7 @@
 ﻿using SWI2_DUR0133;
 using System;
 using System.Collections.Generic;
+using static System.Reflection.Metadata.BlobBuilder;
 
 public class Library
 {
@@ -11,18 +12,19 @@ public class Library
         Books = new List<Book>();
     }
 
-    public virtual void CheckOutBook(Book book, Patron patron)
+    public void CheckOutBook(string bookTitle, Patron patron)
     {
-        if (book.IsAvailable)
+        foreach (var book in Books)
         {
-            Console.WriteLine($"{book.Title} has been checked out by {patron.Name}");
-            book.IsAvailable = false;
-            patron.BooksCheckedOut.Add(book);
+            if (book.Title == bookTitle && book.IsAvailable)
+            {
+                Console.WriteLine($"Checking out {book.Title} to {patron.Name}");
+                book.IsAvailable = false;
+                patron.BooksCheckedOut.Add(book);
+                return;
+            }
         }
-        else
-        {
-            Console.WriteLine($"{book.Title} is not available for checkout");
-        }
+        Console.WriteLine($"Book {bookTitle} is not available for checkout.");
     }
 
     public void ReturnBook(Book book, Patron patron)
