@@ -12,19 +12,18 @@ public class Library
         Books = new List<Book>();
     }
 
-    public void CheckOutBook(string bookTitle, Patron patron)
+    public void CheckOutBook(Book book, Patron patron)
     {
-        foreach (var book in Books)
+        if (book.IsAvailable)
         {
-            if (book.Title == bookTitle && book.IsAvailable)
-            {
-                Console.WriteLine($"Checking out {book.Title} to {patron.Name}");
-                book.IsAvailable = false;
-                patron.BooksCheckedOut.Add(book);
-                return;
-            }
+            Console.WriteLine($"Checking out {book.Title} to {patron.Name}");
+            book.IsAvailable = false;
+            patron.BooksCheckedOut.Add(book);
         }
-        Console.WriteLine($"Book {bookTitle} is not available for checkout.");
+        else
+        {
+            Console.WriteLine($"Book {book.Title} is not available for checkout.");
+        }
     }
 
     public void ReturnBook(Book book, Patron patron)
